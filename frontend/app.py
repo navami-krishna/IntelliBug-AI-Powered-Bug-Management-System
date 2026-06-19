@@ -235,3 +235,70 @@ elif module == "Duplicate Detection":
             st.success(
                 "No Duplicate Bug Found"
             )
+
+#explainable AI
+elif module == "Explainable AI":
+
+    if st.button("Explain Severity Prediction"):
+
+        model = joblib.load(
+            "model/best_severity_model.pkl"
+        )
+
+        tfidf = joblib.load(
+            "model/severity_tfidf.pkl"
+        )
+
+        vector = tfidf.transform(
+            [bug_text]
+        )
+
+        prediction = model.predict(
+            vector
+        )[0]
+
+        st.success(
+            f"Predicted Severity: {prediction}"
+        )
+
+        # Confidence (if supported)
+
+        if hasattr(model, "predict_proba"):
+
+            confidence = max(
+                model.predict_proba(
+                    vector
+                )[0]
+            ) * 100
+
+            st.info(
+                f"Confidence: {confidence:.2f}%"
+            )
+
+        # Important Words
+
+        import numpy as np
+
+        feature_names = (
+            tfidf.get_feature_names_out()
+        )
+
+        scores = vector.toarray()[0]
+
+        top_indices = np.argsort(
+            scores
+        )[::-1][:10]
+
+        st.subheader(
+            "Top Words Influencing Prediction"
+        )
+
+        for i in top_indices:
+
+            if scores[i] > 0:
+
+                st.write(
+                    f"• {feature_names[i]}"
+                )
+
+            
