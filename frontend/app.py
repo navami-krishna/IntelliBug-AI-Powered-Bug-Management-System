@@ -2,6 +2,7 @@ import streamlit as st
 import joblib
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+from pathlib import Path
 
 # ---------------- PAGE CONFIG ----------------
 # ---------------- PAGE CONFIG ----------------
@@ -18,7 +19,7 @@ if st.session_state.show_home:
     st.markdown("""
     <style>
     .stApp {
-        background-color: #2E5894;
+        background-color: #;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -32,7 +33,7 @@ if st.session_state.show_home:
     col1, col2, col3 = st.columns([1, 2, 1])
 
     with col2:
-        st.image("logo.png", width=650)
+        st.image(Path(__file__).parent / "logo.png", width=650)
 
     st.write("")
     st.write("")
